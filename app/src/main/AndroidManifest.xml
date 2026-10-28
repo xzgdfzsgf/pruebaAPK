@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permite aplicar la imagen elegida a la pantalla de bloqueo y al fondo del sistema. -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <!-- Permite abrir el diálogo de desinstalación desde el menú de cada app. -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <!-- Consulta del clima en Open-Meteo, siempre por HTTPS. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Solo lectura, para el widget de agenda. Se pide únicamente si el usuario activa ese widget. -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.SHOW_ALARMS" />
+        </intent>
     </queries>
-    <application android:allowBackup="true" android:label="ENV UI" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:usesCleartextTraffic="false">
-        <activity android:name=".MainActivity" android:exported="true">
+
+    <application
+        android:allowBackup="true"
+        android:label="ENV UI"
+        android:theme="@android:style/Theme.Material.NoActionBar"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:clearTaskOnLaunch="true"
+            android:resumeWhilePausing="true"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -18,5 +45,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".EnvDream"
+            android:exported="true"
+            android:label="Reposo ENV UI"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>
